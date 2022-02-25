@@ -1,7 +1,43 @@
 import * as React from 'react'
 import { useStateWithStorage } from '../hooks/use_state_with_storage'
-const StorageKey = 'pages/editor:text'
 import styled from 'styled-components'
+import { putMsg } from '../indexeddb/chatStore'
+
+const StorageKey = 'pages/chat:text'
+const AwaitAnswer = 'botchat_awaitAnswer:text'
+
+export const InputForm = (props) => {
+  const [message, setMessage] = useStateWithStorage('', StorageKey);
+  const [awaitAnswer, setAwaitAnswer] = useStateWithStorage('', AwaitAnswer);
+
+  const handleSubmit = (event) => {
+    if (message.length > 0) {
+      event.preventDefault();
+      //console.log(name);
+      props.setValue(message)
+      putMsg("自分", message, true, false)
+      setAwaitAnswer(message);
+      setMessage('');
+    } else {
+      //error
+      console.log("メッセージを入力してください")
+    }
+  };
+
+  return (
+    <>
+      <TextArea
+        onChange={(event) => setMessage(event.target.value)}
+        value={message}
+      />
+      <form onSubmit={handleSubmit}>
+        <SendButton>
+          送信
+        </SendButton>
+      </form>
+    </>
+  );
+}
 
 const TextArea = styled.textarea`
   resize: none;
@@ -31,43 +67,3 @@ line-height   : 1em;         /* 1行の高さ  */
 transition    : .3s;         /* なめらか変化 */
 border        : 1px solid #000066;    /* 枠の指定 */
 `
-
-export const InputForm = () => {
-  const [message, setMessage] = useStateWithStorage('', StorageKey);
-  console.log(message);
-  // const handleChange = (event) => {
-  //   switch (event.target.name) {
-  //     // case 'name':
-  //     //   setName(event.target.value);
-  //     //   break;
-  //     case 'message':
-  //       setMessage(event.target.value);
-  //       break;
-  //     default:
-  //       console.log('key not found');
-  //   }
-  // };
-
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    //console.log(name);
-    console.log(JSON.stringify(message));
-    console.log(message);
-    setMessage('');
-  };
-
-  return (
-    <>
-      <TextArea
-        onChange={(event) => setMessage(event.target.value)}
-        value={message}
-      />
-      <form onSubmit={handleSubmit}>
-        <SendButton>
-          送信
-        </SendButton>
-      </form>
-    </>
-  );
-}
