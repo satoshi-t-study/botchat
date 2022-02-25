@@ -19,59 +19,55 @@ const { useState, useEffect } = React
 export const Editor: React.FC = () => {
   const [msg, setValue] = useStateWithStorage('', StorageKey);
   const [newMsg, setMemos] = useState<chatStoreRecord[]>([])
-  // const getNow = () => (new Date()).toISOString()
-  // const [now, setNow] = useState(getNow())
   const NOBY_API = "https://app.cotogoto.ai/webapi/noby.json";
   const NOBY_KEY = "048503e13e7451314d85dc068c4b0c51";
   const [awaitAnswer, setAwaitAnswer] = useStateWithStorage('', AwaitAnswer);
   const [msgAI, setChat] = useStateWithStorage('', StorageKeyChatView);
-  const intervalGetNotProcessedMsg = 5000;
   const intervalGetResponse = 5000;
-
-  //indexedDBから未処理データを取得
-  useEffect(() => {
-
-    const intervalId = setInterval(() => {
-
-    }, intervalGetNotProcessedMsg);
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
 
   //未処理データがあればAPIへ投げてレスポンスを処理する
   useEffect(() => {
     const intervalId = setInterval(() => {
+      //indexedDBから未処理データを取得
       getNotProcessedMsg().then(
         (getObj) => {
           if (getObj != null) {
-            const parseJson = JSON.stringify(getObj)
+            //   const parseJson = JSON.stringify(getObj)
             console.log(getObj)
-            console.log(parseJson)
-            console.log(parseJson['text'])
+            // console.log(parseJson)
+            //  console.log(parseJson['text'])
             setMemos(getObj)
             //console.log(newMsg.text);
             console.log("でーた取得");
 
             if (getObj['text'] != null) {
-              console.log("API接続中");
+              console.log("API接続中" + getObj['text']);
+              /**
+               * NobyAPIへ送信するパラメータ
+               * 
+               * 送信message
+               * APIkey
+               * 人格
+               * 学習有無
+               */
               const params = {
                 params: {
                   "text": getObj['text'],
                   "appkey": NOBY_KEY,
-                  "persona": 0,
-                  "study": 1
+                  "persona": 0,//普通
+                  "study": 1//学習あり
                 }
               };
 
-              // NobyAPIへ送信するデータ
+              // NobyAPIへデータを送信
               axios.get(NOBY_API, params).then(res => {// NobyAPIへ送信
                 console.log(res)
                 if (res.data.text != "") {
                   console.log(res.data.text)
                   setChat(res.data.text)
+                  //AIのレスポンスを登録
                   putMsg("AI", res.data.text, false, true)
-                  //未処理データのフラグを処理済みにする
+                  //未処理データのフラグを処理済みに更新
                   updateMsg(getObj['name'], getObj['text'], getObj['isOwner'], true, getObj['datetime'])
                   setAwaitAnswer('')
                   setChat('')

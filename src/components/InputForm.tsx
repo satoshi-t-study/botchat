@@ -42,19 +42,18 @@ export const InputForm = (props) => {
 const TextArea = styled.textarea`
   resize: none;
   border: 1px solid black;
-  border-radius :10%;          /* 角丸       */
-  bottom: 10px;
-  left: 10px;
+  bottom: 2vh;
+  left: 2vh;
   font-size: 1rem;
   padding: 1rem;
   position: absolute;
-  height: 20%;
+  height: 10%;
   width: 90%;
 `
 const SendButton = styled.button`
 position:absolute;
-		bottom: 10px;
-		right: 10px;
+		bottom: 2vh;
+		right: 4vh;
 display       : inline-block;
 border-radius : 8%;          /* 角丸       */
 font-size     : 18pt;        /* 文字サイズ */

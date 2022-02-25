@@ -11,72 +11,103 @@ export const ChatView = () => {
   //console.log(memos)
 
   useEffect(() => {
-    getMsg().then(setMemos)
+    const intervalId = setInterval(() => {
+      getMsg().then(setMemos)
+    }, 3000);
+    return () => {
+      clearInterval(intervalId);
+    };
   }, [])
 
   return (
     <>
-      <DisplayMsgArea>
+      <Talk>
         <div>
           {memos.map(memo =>
+            //自分かAIかで表示するトークボックスを出し分け
             memo.isOwner ?
-              <Kaiwa key={memo.datetime}>
-                <div >
-                  <MemoTitle>{memo.name}</MemoTitle>
-                  <MemoText>{memo.text}</MemoText>
-                </div>
-              </Kaiwa>
+              //自分のトークボックス
+              <MsgArea>
+                <Image><p></p>
+                </Image>
+                <Kaiwa key={memo.datetime}>
+                  <div >
+                    <MemoTitle>{memo.name}</MemoTitle>
+                    <MemoText>{memo.text}</MemoText>
+                  </div>
+                </Kaiwa>
+              </MsgArea>
               :
-              <KaiwaAI key={memo.datetime}>
-                <div >
-                  <MemoTitle>{memo.name}</MemoTitle>
-                  <MemoText>{memo.text}</MemoText>
-                </div>
-              </KaiwaAI>
+              //AIのトークボックス
+              <MsgArea>
+                <Image_AI><p></p>
+                </Image_AI>
+                <KaiwaAI key={memo.datetime}>
+                  <div >
+                    <MemoTitle>{memo.name}</MemoTitle>
+                    <MemoText>{memo.text}</MemoText>
+                  </div>
+                </KaiwaAI>
+              </MsgArea>
           )
           }
         </div>
-      </DisplayMsgArea>
+      </Talk>
     </>
   );
 }
-
-const DisplayMsgArea = styled.div`
-padding: 20px 10px;
-margin: 15px auto;
-text-align: right;
-background: #7da4cd;
-  bottom: 30%;
+const Talk = styled.div`
+width: 100%;
+height:75vh;
+position:relative;
+ top:5vh;
   overflow-y: scroll;
-  font-size: 1rem;
-  left: 0;
-  padding: 0.5rem;
-  position: absolute;
-  top: 0;
-  width: 100%;
+`
+const Image = styled.p`
+	content:'';
+	display:inline-block;
+	width:50px;
+	height:50px;
+	vertical-align:top;
+	border-radius:50%;
+	background-size:cover;
+	background-position:-10px;
+  background-image:url(../images/icon_own.png);  /* ←アイコンはここを変更 */
+`
+const Image_AI = styled.p`
+content:'';
+display:inline-block;
+width:50px;
+height:50px;
+vertical-align:top;
+border-radius:50%;
+background-size:cover;
+background-image:url(../images/icon_ai.png); /* ←アイコンはここを変更 */
+`
+
+const MsgArea = styled.div`
+padding:1em;
+overflow:auto;
+background: #7da4cd;
 `
 const KaiwaAI = styled.div`
-text-align: left;
+display:inline-block;
 float: left;
-display: inline-block;
-position: relative; 
-margin: 0 0 0 10px;
-padding: 10px;
-max-width: 600px;
-border-radius: 12px;
-background: #edf1ee;
+	position:relative;
+	background-color:white;
+	border-radius:10px;
+	padding:10px;
+	margin:0 0 0 10px;
 `
 
 const Kaiwa = styled.div`
-display: inline-block;
+display:inline-block;
 float: right;
-position: relative; 
-margin: 0 10px 0 0;
-padding: 8px;
-max-width: 600px;
-border-radius: 12px;
-background: #30e852;
-font-size: 15px:
+	position:relative;
+  background: #30e852;
+	border-radius:10px;
+	padding:10px;
+	margin:0 10px 0 0;
 `
 const MemoTitle = styled.div`
 font-size: 1rem;
