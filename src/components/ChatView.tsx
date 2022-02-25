@@ -8,12 +8,11 @@ import {
 const { useState, useEffect } = React
 export const ChatView = () => {
   const [memos, setMemos] = useState<chatStoreRecord[]>([])
-  //console.log(memos)
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       getMsg().then(setMemos)
-    }, 3000);
+    }, 1000);
     return () => {
       clearInterval(intervalId);
     };
@@ -22,76 +21,77 @@ export const ChatView = () => {
   return (
     <>
       <Talk>
-        <div>
-          {memos.map(memo =>
-            //自分かAIかで表示するトークボックスを出し分け
-            memo.isOwner ?
-              //自分のトークボックス
-              <MsgArea>
-                <Image><p></p>
-                </Image>
-                <Kaiwa key={memo.datetime}>
-                  <div >
-                    <MemoTitle>{memo.name}</MemoTitle>
-                    <MemoText>{memo.text}</MemoText>
-                  </div>
-                </Kaiwa>
-              </MsgArea>
-              :
-              //AIのトークボックス
-              <MsgArea>
-                <Image_AI><p></p>
-                </Image_AI>
-                <KaiwaAI key={memo.datetime}>
-                  <div >
-                    <MemoTitle>{memo.name}</MemoTitle>
-                    <MemoText>{memo.text}</MemoText>
-                  </div>
-                </KaiwaAI>
-              </MsgArea>
-          )
-          }
-        </div>
+        {memos.map(memo =>
+          //自分かAIかで表示するトークボックスを出し分け
+          memo.isOwner ?
+            //自分のトークボックス
+            <MsgArea>
+              <Image><p></p>
+              </Image>
+              <Kaiwa key={memo.datetime}>
+                <div >
+                  <MemoText>{memo.text}</MemoText>
+                </div>
+              </Kaiwa>
+            </MsgArea>
+            :
+            //AIのトークボックス
+            <MsgArea>
+              <Image_AI><p></p>
+              </Image_AI>
+              <KaiwaAI key={memo.datetime}>
+                <div >
+                  <MemoText>{memo.text}</MemoText>
+                </div>
+              </KaiwaAI>
+            </MsgArea>
+        )
+        }
       </Talk>
     </>
   );
 }
+//トーク全体
 const Talk = styled.div`
-width: 100%;
+width: 80vh;
 height:75vh;
 position:relative;
  top:5vh;
-  overflow-y: scroll;
+ overflow-y: scroll;
 `
+//自分のアイコン
 const Image = styled.p`
 	content:'';
 	display:inline-block;
-	width:50px;
-	height:50px;
+	width:30px;
+	height:30px;
 	vertical-align:top;
 	border-radius:50%;
 	background-size:cover;
 	background-position:-10px;
-  background-image:url(../images/icon_own.png);  /* ←アイコンはここを変更 */
+  background-image:url(icon_own.png);  /* ←アイコンはここを変更 */
 `
+//AIのアイコン
 const Image_AI = styled.p`
 content:'';
 display:inline-block;
-width:50px;
-height:50px;
+width:30px;
+height:30px;
 vertical-align:top;
 border-radius:50%;
 background-size:cover;
 background-image:url(../images/icon_ai.png); /* ←アイコンはここを変更 */
 `
-
+//共通のメッセージボックス
 const MsgArea = styled.div`
-padding:1em;
+padding:3px;
 overflow:auto;
 background: #7da4cd;
 `
+//AIのトーク
 const KaiwaAI = styled.div`
 display:inline-block;
+overflow-wrap break-all;
 float: left;
 	position:relative;
 	background-color:white;
@@ -99,9 +99,10 @@ float: left;
 	padding:10px;
 	margin:0 0 0 10px;
 `
-
+//自分のトーク
 const Kaiwa = styled.div`
 display:inline-block;
+overflow-wrap break-all;
 float: right;
 	position:relative;
   background: #30e852;
@@ -114,9 +115,8 @@ font-size: 1rem;
 margin-bottom: 0.5rem;
 `
 
+//メッセージ（自動改行）
 const MemoText = styled.div`
 font-size: 0.85rem;
-overflow: hidden;
-text-overflow: ellipsis;
-white-space: nowrap;
+white-space: normal;
 `
