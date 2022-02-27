@@ -8,10 +8,9 @@ import { updateMsg } from '../indexeddb/chatStore'
 import axios from 'axios';
 import {
   getNotProcessedMsg,
-  chatStoreRecord,
 } from '../indexeddb/chatStore'
-const StorageKey = 'pages/chat:text'
 
+const StorageKey = 'pages/chat:text'
 const { useEffect } = React
 
 export const Editor: React.FC = () => {
@@ -35,7 +34,6 @@ export const Editor: React.FC = () => {
       getNotProcessedMsg().then(
         (getObj) => {
           if (getObj != null) {
-
             const params = {
               params: {
                 "text": getObj['text'],
@@ -59,8 +57,7 @@ export const Editor: React.FC = () => {
               console.error(e);
             });
           } else {
-            //処理対象のレコードが存在しない
-            console.log("No record");
+            //処理対象のレコードが存在しないので処理なし
           }
         }
       ).catch(e => {

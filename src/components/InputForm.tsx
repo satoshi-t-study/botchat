@@ -7,20 +7,16 @@ const StorageKey = 'pages/chat:text'
 
 export const InputForm = (props) => {
   const [message, setMessage] = useStateWithStorage('', StorageKey);
-
   const handleSubmit = (event) => {
     //ページリロードを防ぐ
     event.preventDefault();
 
     if (message.length > 0) {
-      //console.log(name);
       props.setValue(message)
       putMsg("自分", message, true, false)
-      // setAwaitAnswer(message);
       setMessage('');
     } else {
-      //error
-      console.error("メッセージを入力してください")
+      console.log("メッセージを入力してください")
     }
   };
 

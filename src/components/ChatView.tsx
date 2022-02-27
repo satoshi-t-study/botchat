@@ -5,18 +5,26 @@ import {
   chatStoreRecord,
 } from '../indexeddb/chatStore'
 
-const { useState, useEffect } = React
+const { useRef, useState, useEffect } = React
+//メッセージ更新検知用変数
+var mrmoryMemos = 0;
 export const ChatView = () => {
   const [memos, setMemos] = useState<chatStoreRecord[]>([])
-
+  const scrollBottomRef = useRef<HTMLDivElement>(null);
+  const intervalCheckNewMessage = 300;
   useEffect(() => {
     const intervalId = setInterval(() => {
       getMsg().then(setMemos)
-    }, 1000);
+      //メッセージが更新された時のみ最新のメッセージまでスクロール
+      if (memos.length != mrmoryMemos) {
+        scrollBottomRef.current.scrollIntoView()
+        mrmoryMemos = memos.length;
+      }
+    }, intervalCheckNewMessage);
     return () => {
       clearInterval(intervalId);
     };
-  }, [])
+  }, [memos])
 
   return (
     <>
@@ -47,6 +55,8 @@ export const ChatView = () => {
             </MsgArea>
         )
         }
+        {/* 自動で一番下までスクロールするdiv */}
+        <div ref={scrollBottomRef} />
       </Talk>
     </>
   );
@@ -69,7 +79,7 @@ const Image = styled.p`
 	border-radius:50%;
 	background-size:cover;
 	background-position:-10px;
-  background-image:url(icon_own.png);  /* ←アイコンはここを変更 */
+  background-image:url(icon_own.png);
 `
 //AIのアイコン
 const Image_AI = styled.p`
@@ -80,7 +90,7 @@ height:30px;
 vertical-align:top;
 border-radius:50%;
 background-size:cover;
-background-image:url(../images/icon_ai.png); /* ←アイコンはここを変更 */
+background-image:url(icon_ai.png);
 `
 //共通のメッセージボックス
 const MsgArea = styled.div`
@@ -109,10 +119,6 @@ float: right;
 	border-radius:10px;
 	padding:10px;
 	margin:0 10px 0 0;
-`
-const MemoTitle = styled.div`
-font-size: 1rem;
-margin-bottom: 0.5rem;
 `
 
 //メッセージ（自動改行）
