@@ -33,10 +33,9 @@ export const ChatView = () => {
           //自分かAIかで表示するトークボックスを出し分け
           memo.isOwner ?
             //自分のトークボックス
-            <MsgArea>
-              <Image><p></p>
-              </Image>
-              <Kaiwa key={memo.datetime}>
+            <MsgArea >
+              <Image />
+              <Kaiwa>
                 <div >
                   <MemoText>{memo.text}</MemoText>
                 </div>
@@ -45,9 +44,8 @@ export const ChatView = () => {
             :
             //AIのトークボックス
             <MsgArea>
-              <Image_AI><p></p>
-              </Image_AI>
-              <KaiwaAI key={memo.datetime}>
+              <Image_AI />
+              <KaiwaAI >
                 <div >
                   <MemoText>{memo.text}</MemoText>
                 </div>
@@ -63,66 +61,62 @@ export const ChatView = () => {
 }
 //トーク全体
 const Talk = styled.div`
-width: 80vh;
-height:75vh;
+height:80vh;
 position:relative;
- top:5vh;
- overflow-y: scroll;
+top:5vh;
+background: #7da4cd;
+overflow-y: scroll;
 `
 //自分のアイコン
-const Image = styled.p`
-	content:'';
-	display:inline-block;
-	width:30px;
-	height:30px;
-	vertical-align:top;
-	border-radius:50%;
-	background-size:cover;
-	background-position:-10px;
-  background-image:url(icon_own.png);
-`
-//AIのアイコン
-const Image_AI = styled.p`
-content:'';
-display:inline-block;
-width:30px;
-height:30px;
-vertical-align:top;
+const Image = styled.div`
+float: right;
+width:35px;
+height:35px;
+vertical-align:text-top;
 border-radius:50%;
 background-size:cover;
-background-image:url(icon_ai.png);
+background-image:url(images/icon_own.png);
+`
+//AIのアイコン
+const Image_AI = styled.div`
+float: left;
+width:35px;
+height:35px;
+vertical-align:text-top;
+border-radius:50%;
+background-size:cover;
+background-image:url(images/icon_ai.png);
 `
 //共通のメッセージボックス
 const MsgArea = styled.div`
 padding:3px;
 overflow:auto;
-background: #7da4cd;
 `
 //AIのトーク
 const KaiwaAI = styled.div`
 display:inline-block;
 overflow-wrap break-all;
 float: left;
-	position:relative;
-	background-color:white;
-	border-radius:10px;
-	padding:10px;
-	margin:0 0 0 10px;
+position:relative;
+background-color:white;
+border-radius:10px;
+padding:10px;
+margin:0 0 0 10px;
 `
 //自分のトーク
 const Kaiwa = styled.div`
 display:inline-block;
 overflow-wrap break-all;
 float: right;
-	position:relative;
-  background: #30e852;
-	border-radius:10px;
-	padding:10px;
-	margin:0 10px 0 0;
+position:relative;
+background: #30e852;
+border-radius:10px;
+padding:10px;
+margin:0 10px 0 0;
 `
 
 //メッセージ（自動改行）
 const MemoText = styled.div`
-font-size: 0.85rem;
+font-size: 0.9rem;
 white-space: normal;
 `

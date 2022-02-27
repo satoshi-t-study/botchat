@@ -11,12 +11,11 @@ export const InputForm = (props) => {
     //ページリロードを防ぐ
     event.preventDefault();
 
+    //メッセージが入力されていたら登録
     if (message.length > 0) {
       props.setValue(message)
       putMsg("自分", message, true, false)
       setMessage('');
-    } else {
-      console.log("メッセージを入力してください")
     }
   };
 
@@ -24,8 +23,7 @@ export const InputForm = (props) => {
     <>
       <TextArea
         onChange={(event) => setMessage(event.target.value)}
-        value={message}
-      />
+        value={message} />
       <form onSubmit={handleSubmit}>
         <SendButton>
           送信
@@ -36,27 +34,27 @@ export const InputForm = (props) => {
 }
 //入力ボックス
 const TextArea = styled.textarea`
-  resize: none;
-  border: 1px solid black;
-  bottom: 2vh;
-  left: 2vh;
-  font-size: 1rem;
-  padding: 1rem;
-  position: absolute;
-  height: 10%;
-  width: 50%;
+resize: none;
+border: 1px solid black;
+bottom: 2vh;
+left: 2vh;
+font-size: 1rem;
+padding: 0.5rem;
+position: absolute;
+height: 32px;
+width: 70%;
 `
+
 //送信ボタン
 const SendButton = styled.button`
 position:absolute;
-		bottom: 2vh;
-		right: 4vh;
-border-radius : 8%; 
-font-size     : 12pt; 
-text-align    : center;
-padding       : 12px 12px;
-background    : #000066;
-color         : #ffffff; 
-line-height   : 1em;
-border        : 1px solid #000066; 
+bottom: 2vh;
+right: 4vh;
+border-radius: 8%; 
+font-size: 12pt; 
+text-align: center;
+padding: 12px 12px;
+background: #000066;
+color: #ffffff; 
+line-height: 0.5em;
 `

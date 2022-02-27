@@ -13,7 +13,7 @@ import {
 const StorageKey = 'pages/chat:text'
 const { useEffect } = React
 
-export const Editor: React.FC = () => {
+export const Chat: React.FC = () => {
   const [msg, setValue] = useStateWithStorage('', StorageKey);
   const NOBY_API = "https://app.cotogoto.ai/webapi/noby.json";
   const NOBY_KEY = "048503e13e7451314d85dc068c4b0c51";
@@ -57,7 +57,7 @@ export const Editor: React.FC = () => {
               console.error(e);
             });
           } else {
-            //処理対象のレコードが存在しないので処理なし
+            //処理対象のレコードが存在しない場合処理なし
           }
         }
       ).catch(e => {

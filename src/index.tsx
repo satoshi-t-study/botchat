@@ -1,8 +1,7 @@
 import * as React from 'react'
 import { render } from 'react-dom'
-import styled from 'styled-components'
 import { createGlobalStyle } from 'styled-components'
-import { Editor } from './pages/chat'
+import { Chat } from './pages/chat'
 
 const GlobalStyle = createGlobalStyle`
     body * {
@@ -13,7 +12,7 @@ const GlobalStyle = createGlobalStyle`
 const Main = (
   <>
     <GlobalStyle />
-    <Editor />
+    <Chat />
   </>
 )
 render(Main, document.getElementById('app'))
